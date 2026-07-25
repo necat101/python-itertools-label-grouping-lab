@@ -1,0 +1,334 @@
+[
+  {
+    "case": "contiguous_label_runs_marker",
+    "method": "inspect_inputs",
+    "passed": true,
+    "detail": {
+      "has_required_fields": true,
+      "label_sequence": [
+        "cat",
+        "cat",
+        "dog",
+        "cat"
+      ],
+      "label_sequence_ok": true,
+      "record_count": 4,
+      "record_count_ok": true,
+      "run_keys": [
+        "cat",
+        "dog",
+        "cat"
+      ],
+      "repeated_in_separate_runs": true
+    }
+  },
+  {
+    "case": "contiguous_label_runs_marker",
+    "method": "execute_groupby",
+    "passed": true,
+    "detail": {
+      "group_count": 3,
+      "keys": [
+        "cat",
+        "dog",
+        "cat"
+      ],
+      "sizes": [
+        2,
+        1,
+        1
+      ],
+      "names": [
+        [
+          "c1",
+          "c2"
+        ],
+        [
+          "d1"
+        ],
+        [
+          "c3"
+        ]
+      ],
+      "keys_match": true,
+      "sizes_match": true
+    }
+  },
+  {
+    "case": "contiguous_label_runs_marker",
+    "method": "verify_relation",
+    "passed": true,
+    "detail": {
+      "keys": [
+        "cat",
+        "dog",
+        "cat"
+      ],
+      "sizes": [
+        2,
+        1,
+        1
+      ],
+      "keys_ok": true,
+      "sizes_ok": true,
+      "cat_runs_not_merged": true
+    }
+  },
+  {
+    "case": "unsorted_repeated_labels_marker",
+    "method": "inspect_inputs",
+    "passed": true,
+    "detail": {
+      "has_required_fields": true,
+      "label_sequence": [
+        "cat",
+        "cat",
+        "dog",
+        "cat",
+        "dog",
+        "dog"
+      ],
+      "label_sequence_ok": true,
+      "record_count": 6,
+      "record_count_ok": true,
+      "run_keys": [
+        "cat",
+        "dog",
+        "cat",
+        "dog"
+      ],
+      "cat_runs": 2,
+      "dog_runs": 2,
+      "repeated_labels_separate_runs": true
+    }
+  },
+  {
+    "case": "unsorted_repeated_labels_marker",
+    "method": "execute_groupby",
+    "passed": true,
+    "detail": {
+      "group_count": 4,
+      "keys": [
+        "cat",
+        "dog",
+        "cat",
+        "dog"
+      ],
+      "sizes": [
+        2,
+        1,
+        1,
+        2
+      ],
+      "names": [
+        [
+          "c1",
+          "c2"
+        ],
+        [
+          "d1"
+        ],
+        [
+          "c3"
+        ],
+        [
+          "d2",
+          "d3"
+        ]
+      ],
+      "group_count_ok": true,
+      "keys_match": true,
+      "sizes_match": true
+    }
+  },
+  {
+    "case": "unsorted_repeated_labels_marker",
+    "method": "verify_relation",
+    "passed": true,
+    "detail": {
+      "keys": [
+        "cat",
+        "dog",
+        "cat",
+        "dog"
+      ],
+      "cat_group_count": 2,
+      "dog_group_count": 2,
+      "repeated_cat_groups": true,
+      "repeated_dog_groups": true,
+      "not_global_aggregation": true,
+      "unique_labels": [
+        "cat",
+        "dog"
+      ],
+      "group_count_exceeds_unique_labels": true
+    }
+  },
+  {
+    "case": "sorted_global_grouping_marker",
+    "method": "inspect_inputs",
+    "passed": true,
+    "detail": {
+      "has_required_fields": true,
+      "label_sequence": [
+        "cat",
+        "cat",
+        "dog",
+        "cat",
+        "dog",
+        "dog"
+      ],
+      "label_sequence_ok": true,
+      "record_count": 6,
+      "record_count_ok": true,
+      "sorted_labels": [
+        "cat",
+        "cat",
+        "cat",
+        "dog",
+        "dog",
+        "dog"
+      ],
+      "sorted_ok": true,
+      "cat_names_sorted": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "dog_names_sorted": [
+        "d1",
+        "d2",
+        "d3"
+      ],
+      "cat_order_preserved": true,
+      "dog_order_preserved": true,
+      "stable_sort_ok": true
+    }
+  },
+  {
+    "case": "sorted_global_grouping_marker",
+    "method": "execute_groupby",
+    "passed": true,
+    "detail": {
+      "group_count": 2,
+      "keys": [
+        "cat",
+        "dog"
+      ],
+      "sizes": [
+        3,
+        3
+      ],
+      "names": [
+        [
+          "c1",
+          "c2",
+          "c3"
+        ],
+        [
+          "d1",
+          "d2",
+          "d3"
+        ]
+      ],
+      "group_count_ok": true,
+      "keys_match": true,
+      "sizes_match": true
+    }
+  },
+  {
+    "case": "sorted_global_grouping_marker",
+    "method": "verify_relation",
+    "passed": true,
+    "detail": {
+      "keys": [
+        "cat",
+        "dog"
+      ],
+      "cat_occurrences": 1,
+      "dog_occurrences": 1,
+      "each_label_once": true,
+      "cat_names": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "dog_names": [
+        "d1",
+        "d2",
+        "d3"
+      ],
+      "cat_order_ok": true,
+      "dog_order_ok": true,
+      "order_preserved": true
+    }
+  },
+  {
+    "case": "shared_group_iterator_marker",
+    "method": "inspect_inputs",
+    "passed": true,
+    "detail": {
+      "has_required_fields": true,
+      "label_sequence": [
+        "cat",
+        "cat",
+        "dog",
+        "cat",
+        "dog",
+        "dog"
+      ],
+      "label_sequence_ok": true,
+      "record_count": 6,
+      "record_count_ok": true,
+      "run_keys": [
+        "cat",
+        "dog",
+        "cat",
+        "dog"
+      ],
+      "repeated_labels_separate_runs": true
+    }
+  },
+  {
+    "case": "shared_group_iterator_marker",
+    "method": "execute_groupby",
+    "passed": true,
+    "detail": {
+      "delayed_path": {
+        "first_key": "cat",
+        "advanced_outer": true,
+        "next_key": "dog",
+        "delayed_names": [],
+        "delayed_count": 0
+      },
+      "materialized_path": {
+        "first_key": "cat",
+        "materialized_names": [
+          "c1",
+          "c2"
+        ],
+        "materialized_count": 2,
+        "advanced_outer": true
+      }
+    }
+  },
+  {
+    "case": "shared_group_iterator_marker",
+    "method": "verify_relation",
+    "passed": true,
+    "detail": {
+      "delayed_names": [],
+      "expected_first_group": [
+        "c1",
+        "c2"
+      ],
+      "delayed_lost_original": true,
+      "materialized_names": [
+        "c1",
+        "c2"
+      ],
+      "materialization_preserved": true,
+      "outer_advanced": true
+    }
+  }
+]

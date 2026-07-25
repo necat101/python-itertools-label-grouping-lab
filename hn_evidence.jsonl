@@ -1,0 +1,9 @@
+# hn_evidence.jsonl
+{"source": "linked_article", "text": "Python dictionaries and lists are bread and butter for many applications, but might be too simple for more advanced data organisation."}
+{"source": "hn_comment", "author": "judicious", "comment_id": 41453048, "text": "Another module that's packaged with the stdlib that's immensely useful is itertools. I especially find takewhile, cycle, and chain to be incredibly useful building blocks for list-related functions."}
+{"source": "python_docs", "module": "itertools", "function": "groupby", "url": "https://docs.python.org/3/library/itertools.html#itertools.groupby", "text": "Make an iterator that returns consecutive keys and groups from the iterable. Generally, the iterable needs to already be sorted on the same key function."}
+{"source": "python_docs", "module": "itertools", "function": "groupby", "url": "https://docs.python.org/3/library/itertools.html#itertools.groupby", "text": "The returned group is itself an iterator that shares the underlying iterable with groupby(). Because the source is shared, when the groupby() object is advanced, the previous group is no longer visible."}
+{"source": "local_observation", "case": "contiguous_label_runs_marker", "text": "groupby on cat,cat,dog,cat produces keys cat,dog,cat with sizes 2,1,1 – cat runs are not merged"}
+{"source": "local_observation", "case": "unsorted_repeated_labels_marker", "text": "raw groupby on unsorted cat/dog sequence produces repeated label groups – not global aggregation"}
+{"source": "local_observation", "case": "sorted_global_grouping_marker", "text": "stable sort by label then groupby produces one group per label; cat names c1,c2,c3 and dog names d1,d2,d3 preserve original relative order"}
+{"source": "local_observation", "case": "shared_group_iterator_marker", "text": "delayed consumption of first group after advancing outer iterator no longer yields [c1,c2]; early materialization with list(group) preserves [c1,c2]"}
