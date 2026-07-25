@@ -4,6 +4,12 @@ Hacker News thread: https://news.ycombinator.com/item?id=41450824
 Title: "Lesser known parts of Python standard library"  
 Author: rbanffy · 137 comments · 2024-08-19
 
+Tool command used to read the thread:
+
+```
+hackernews get-item --id 41450824
+```
+
 ## Linked article claims
 
 > Python dictionaries and lists are bread and butter for many applications, but might be too simple for more advanced data organisation.

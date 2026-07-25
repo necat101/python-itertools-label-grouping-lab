@@ -328,49 +328,73 @@ def case4_shared_iter_inspect(records=None):
 
 def case4_shared_iter_execute(records=None):
     records = records if records is not None else DATASET_ALL
-    # Path A: delayed consumption – advance outer iterator before consuming first group
-    gb_a = itertools.groupby(records, key=lambda r: r["label"])
-    key_a, group_a = next(gb_a)
-    # Advance outer iterator, discarding the rest of group_a
+    # Basic input validation – executor must be able to return failure
     try:
-        key_a2, group_a2 = next(gb_a)
-        outer_advanced = True
-    except StopIteration:
-        outer_advanced = False
-        key_a2 = None
-    # Now try delayed consumption
-    delayed_records = list(group_a)
-    delayed_names = [r["name"] for r in delayed_records]
-    # Path B: early materialization – consume first group before advancing
-    gb_b = itertools.groupby(records, key=lambda r: r["label"])
-    key_b, group_b = next(gb_b)
-    materialized_records = list(group_b)
-    materialized_names = [r["name"] for r in materialized_records]
-    # Advance after materializing
-    try:
-        key_b2, group_b2 = next(gb_b)
-        outer_advanced_b = True
-    except StopIteration:
-        outer_advanced_b = False
-    passed = outer_advanced and outer_advanced_b
-    return {
-        "passed": passed,
-        "detail": {
-            "delayed_path": {
-                "first_key": key_a,
-                "advanced_outer": outer_advanced,
-                "next_key": key_a2,
-                "delayed_names": delayed_names,
-                "delayed_count": len(delayed_names),
-            },
-            "materialized_path": {
-                "first_key": key_b,
-                "materialized_names": materialized_names,
-                "materialized_count": len(materialized_names),
-                "advanced_outer": outer_advanced_b,
-            },
+        if not all(isinstance(r, dict) and "name" in r and "label" in r for r in records):
+            return {"passed": False, "detail": {"error": "missing_required_fields"}}
+        # Path A: delayed consumption – advance outer iterator before consuming first group
+        gb_a = itertools.groupby(records, key=lambda r: r["label"])
+        key_a, group_a = next(gb_a)
+        # Advance outer iterator, discarding the rest of group_a
+        try:
+            key_a2, group_a2 = next(gb_a)
+            outer_advanced = True
+        except StopIteration:
+            outer_advanced = False
+            key_a2 = None
+        # Now try delayed consumption
+        delayed_records = list(group_a)
+        delayed_names = [r.get("name") if isinstance(r, dict) else None for r in delayed_records]
+        # Path B: early materialization – consume first group before advancing
+        gb_b = itertools.groupby(records, key=lambda r: r["label"])
+        key_b, group_b = next(gb_b)
+        materialized_records = list(group_b)
+        materialized_names = [r.get("name") if isinstance(r, dict) else None for r in materialized_records]
+        # Advance after materializing
+        try:
+            key_b2, group_b2 = next(gb_b)
+            outer_advanced_b = True
+        except StopIteration:
+            outer_advanced_b = False
+        # Pass condition checks the actual recorded structure
+        first_key_ok = key_a == "cat" and key_b == "cat"
+        next_key_ok = key_a2 == "dog"
+        delayed_lost_original = delayed_names != ["c1", "c2"]
+        delayed_empty_ok = delayed_names == []  # observed on CPython
+        materialization_ok = materialized_names == ["c1", "c2"]
+        passed = all([
+            first_key_ok,
+            next_key_ok,
+            delayed_lost_original,
+            materialization_ok,
+            outer_advanced,
+            outer_advanced_b,
+        ])
+        return {
+            "passed": passed,
+            "detail": {
+                "delayed_path": {
+                    "first_key": key_a,
+                    "advanced_outer": outer_advanced,
+                    "next_key": key_a2,
+                    "delayed_names": delayed_names,
+                    "delayed_count": len(delayed_names),
+                    "first_key_ok": first_key_ok,
+                    "next_key_ok": next_key_ok,
+                    "delayed_lost_original": delayed_lost_original,
+                    "delayed_empty_ok": delayed_empty_ok,
+                },
+                "materialized_path": {
+                    "first_key": key_b,
+                    "materialized_names": materialized_names,
+                    "materialized_count": len(materialized_names),
+                    "advanced_outer": outer_advanced_b,
+                    "materialization_ok": materialization_ok,
+                },
+            }
         }
-    }
+    except Exception as e:
+        return {"passed": False, "detail": {"error": type(e).__name__, "error_msg": str(e)}}
 
 
 def case4_shared_iter_verify(records=None):

@@ -299,7 +299,11 @@
         "advanced_outer": true,
         "next_key": "dog",
         "delayed_names": [],
-        "delayed_count": 0
+        "delayed_count": 0,
+        "first_key_ok": true,
+        "next_key_ok": true,
+        "delayed_lost_original": true,
+        "delayed_empty_ok": true
       },
       "materialized_path": {
         "first_key": "cat",
@@ -308,7 +312,8 @@
           "c2"
         ],
         "materialized_count": 2,
-        "advanced_outer": true
+        "advanced_outer": true,
+        "materialization_ok": true
       }
     }
   },

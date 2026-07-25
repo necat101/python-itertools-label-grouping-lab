@@ -1,4 +1,4 @@
-# hn_evidence.jsonl
+{"source": "hn_tool_command", "tool": "hackernews", "command": "hackernews get-item --id 41450824", "story_id": 41450824, "title": "Lesser known parts of Python standard library"}
 {"source": "linked_article", "text": "Python dictionaries and lists are bread and butter for many applications, but might be too simple for more advanced data organisation."}
 {"source": "hn_comment", "author": "judicious", "comment_id": 41453048, "text": "Another module that's packaged with the stdlib that's immensely useful is itertools. I especially find takewhile, cycle, and chain to be incredibly useful building blocks for list-related functions."}
 {"source": "python_docs", "module": "itertools", "function": "groupby", "url": "https://docs.python.org/3/library/itertools.html#itertools.groupby", "text": "Make an iterator that returns consecutive keys and groups from the iterable. Generally, the iterable needs to already be sorted on the same key function."}

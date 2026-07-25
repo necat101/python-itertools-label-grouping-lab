@@ -119,6 +119,17 @@ class TestLab(unittest.TestCase):
         result = run_lab.case4_shared_iter_inspect(bad)
         self.assertFalse(result["passed"])
 
+    def test_corrupt_case4_execute(self):
+        """production executor returns failure on unsuitable input"""
+        # Missing required fields – executor must return passed=False, not crash
+        bad = [{"name": "x"}]  # missing label field
+        result = run_lab.case4_shared_iter_execute(bad)
+        self.assertFalse(result["passed"])
+        # Wrong label sequence – grouping structure won't match expected
+        bad2 = [{"name": "a", "label": "fish"}]
+        result2 = run_lab.case4_shared_iter_execute(bad2)
+        self.assertFalse(result2["passed"])
+
     def test_twelve_rows_deterministic_unique_ordered(self):
         """the twelve rows are deterministic, unique, and in the required order"""
         rows1 = run_lab.run_all()
